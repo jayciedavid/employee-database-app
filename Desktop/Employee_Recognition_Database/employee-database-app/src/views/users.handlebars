@@ -1,0 +1,119 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $('object').each(function(){
+
+      var date = new Date;
+      // add the current unix timestamp in microseconds to the the image src as a query string
+      this.src = this.src + '?' + date.getTime();
+   });
+
+});
+</script>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">Admin Portal</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/users">Users
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/analytics">Analytics</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class='small-space'></div>
+<h1>Administrator Portal - Users</h1>
+<h2>Add a New User</h2>
+<div class="small-space"></div>
+<div class="form-group">
+    <form id="addUser" action="/users" method="post" enctype="multipart/form-data">
+        <label for="first_name">First name</label>
+        <input type="text" class="form-control" id="first_name" name="first_name"></input>
+</div>
+<div class="form-group">
+    <label for="last_name">Last name</label>
+    <input type="text" class="form-control" id="last_name" name="last_name"></input>
+</div>
+<div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username"></input>
+</div>
+<div class="form-group">
+    <label for="password">Password</label>
+    <input type="text" class="form-control" id="password" name="password"></input>
+</div>
+<div class="form-group">
+    <label for="type">Type</label>
+    <!--<input type="text" class="form-control" id="type" name="type"></input>-->
+    <select id="type" name="type">
+        <option value="regular">regular</option>
+        <option value="admin">admin</option>
+    </select>
+</div>
+<div class="form-group">
+    <label for="signature">Signature</label>
+    <input type="file" class="form-control" id="signature" name="signature" accept=""></input>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<div class='vertical-space'></div>
+<h2>Current Users</h2>
+<div>
+    <table id="usersTable" class="table">
+        <thead>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Time Created</th>
+            <th>Date Created</th>
+            <th>Type</th>
+            <th>Signature</th>
+
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <td>
+                    <button onclick="deleteUsers({{user_id}})">Delete</button>
+                </td>
+                <td>
+                    <button>
+                        <a href="/users/{{user_id}}/">Update</a>
+                    </button>
+                </td>
+                <td>
+                    <button>
+                        <a href="/users/Signature/{{user_id}}/">Change Signature</a>
+                    </button>
+                </td>
+                <td>{{user_id}}</td>
+                <td>{{first_name}}</td>
+                <td>{{last_name}}</td>
+                <td>{{username}}</td>
+                <td>{{password}}</td>
+                <td>{{time}}</td>
+                <td>{{date}}</td>
+                <td>{{type}}</td>
+                <td>
+                    <object data="data:image/jpeg;base64, {{signature}}">
+                        <!--<img src="Error.src" onerror="this.style.display='none'" />-->
+                    </object>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
